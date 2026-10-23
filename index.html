@@ -1,29 +1,87 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>HappyBirthday!!</title>
-    <meta name="Generator" content="EditPlus" />
-    <meta name="Author" content="" />
-    <meta name="Keywords" content="" />
-    <meta name="Description" content="" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="heart.css" />
-  </head>
-  <body>
-    <div class="box">
-      <canvas id="pinkboard" width="1000" height="1000"></canvas> 
-     <div class="heart-message">
-    <span id="typed-text"></span>
-</div>
-    <div class="floating-hearts">
-  <span>❤</span>
-  <span>❤</span>
-  <span>❤</span>
-  <span>❤</span>
-  <span>❤</span>
-</div>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>&lt;=/</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="heart.css" />
+  <link rel="stylesheet" href="layout.css" />
+</head>
+<body>
+  <section class="welcome-screen" id="welcome-screen" aria-labelledby="welcome-title">
+    <canvas id="welcome-heart-canvas" aria-hidden="true"></canvas>
+    <div class="welcome-card">
+      <span class="welcome-heart" aria-hidden="true">&#9825;</span>
+      <p class="eyebrow">A little surprise, just for you</p>
+      <h1 id="welcome-title">For you, <em>Ally.</em></h1>
+      <p>Something special is waiting inside.</p>
+      <button type="button" id="enter-birthday" aria-label="Open your birthday surprise">&lt;=/</button>
+      <small>Click to open your surprise</small>
     </div>
-    <script src="script.js"></script>
-  </body>
-  
+  </section>
+  <main class="birthday-page" id="birthday-page" hidden>
+    <header><a href="./index.html">&#9825; &nbsp;For Ally</a><span>Puhon</span></header>
+    <section class="birthday-layout" aria-labelledby="birthday-title">
+      <div class="greeting">
+        <p class="eyebrow">Today is all about you</p>
+        <h1 id="birthday-title" tabindex="-1">Happy Birthday,<br /><em>Ally.</em></h1>
+        <p class="intro">A Heart Of Full Of Love, And Biggest Dreams.</p>
+        <div class="heart-stage">
+        <div class="box" role="img" aria-label="An animated heart with birthday wishes for Ally">
+          <canvas id="pinkboard" width="1000" height="1000" aria-hidden="true"></canvas>
+          <div class="heart-message" aria-hidden="true"><span id="typed-text"></span></div>
+        </div>
+        </div>
+        <p class="heart-caption">A heart full of wishes, just for you &#9825;</p>
+      </div>
+      <aside class="memory" aria-labelledby="memory-title">
+        <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Favorite memories" tabindex="0">
+        <div class="photo-card">
+          <div class="photo-frame">
+            <div id="photo-slides"></div>
+            <div id="photo-placeholder">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" aria-hidden="true"><rect x="9" y="12" width="42" height="36" rx="6" stroke="currentColor" stroke-width="1.5"/><circle cx="23" cy="24" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m10 42 13-11 9 7 8-12 11 16" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span>Memories in motion</span><small>Choose a few favorite photos of Ally</small>
+            </div>
+          </div>
+          <div class="photo-caption">Little Moments. Beautiful Memories. <span>&#9825;</span></div>
+        </div>
+        <div id="carousel-controls" class="carousel-controls" hidden>
+          <button type="button" id="previous-photo" aria-label="Previous photo">&#8592;</button>
+          <span id="photo-count" aria-live="off"></span>
+          <button type="button" id="next-photo" aria-label="Next photo">&#8594;</button>
+          <button type="button" id="toggle-play">Pause</button>
+        </div>
+        <div id="photo-dots" class="photo-dots" role="group" aria-label="Choose a photo"></div>
+        <div id="photo-thumbnails" class="photo-thumbnails" role="group" aria-label="All birthday memories"></div>
+        </div>
+        <div class="memory-details">
+          <p class="eyebrow">The birthday girl</p>
+          <h2 id="memory-title">One of a kind. Always.</h2>
+          <p>May this next chapter bring you happiness, answered prayers, and so many reasons to smile.</p>
+          <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
+          <button type="button" id="choose-photo">Try other photos &#8599;</button>
+          <button type="button" id="restore-photos" hidden>Restore birthday photos</button>
+          <p id="photo-status" role="status">Loading your five birthday memories...</p>
+        </div>
+      </aside>
+    </section>
+    <footer class="birthday-footer">
+      <span class="footer-message">Made With Love, For Your Special Day. &#9825;</span>
+      <div class="music-player" role="group" aria-label="Birthday music">
+        <span class="music-title">About You <small>The 1975</small></span>
+        <audio id="birthday-music" controls preload="metadata" aria-label="Play or pause About You by The 1975" src="The%201975%20-%20About%20You%20(Official).mp3"></audio>
+        <span id="music-status" role="status" hidden></span>
+      </div>
+    </footer>
+  </main>
+  <div class="floating-hearts" aria-hidden="true"><span>&#10084;</span><span>&#10084;</span><span>&#10084;</span><span>&#10084;</span><span>&#10084;</span></div>
+  <script src="script.js"></script>
+  <script src="photo.js"></script>
+  <script src="layout.js"></script>
+  <script src="music.js"></script>
+  <script src="welcome.js"></script>
+  <script src="welcome-heart.js"></script>
+</body>
 </html>

@@ -285,7 +285,6 @@ function typeMessage() {
   }
 }
 
-window.onload = () => {
+document.addEventListener('birthday:open', () => {
   typeMessage();
-};
-  
+}, { once: true });

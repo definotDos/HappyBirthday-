@@ -1,0 +1,182 @@
+﻿* { box-sizing: border-box; }
+body { display: block; color: #f7eee8; background: radial-gradient(ellipse at 85% 25%, #23302d, transparent 48%), #0b1522; font-family: Arial, sans-serif; }
+.birthday-page { position: relative; z-index: 1; max-width: 1200px; margin: auto; padding: 0 48px; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 30px 0; border-bottom: 1px solid #ffffff14; }
+header a { color: #f7eee8; text-decoration: none; font: 23px Georgia, serif; }
+header > span { color: #aab3b5; font-size: 12px; letter-spacing: 1px; }
+.birthday-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; padding: 64px 0 48px; align-items: center; }
+.eyebrow { color: #d4b996; text-transform: uppercase; letter-spacing: 3px; font-size: 10px; font-weight: bold; margin: 0 0 20px; }
+h1 { font: normal clamp(48px, 6vw, 76px)/1.08 Georgia, serif; letter-spacing: -2px; margin: 0 0 24px; }
+h1 em { color: #e5c5a5; }
+.intro, .memory-details > p:not(.eyebrow):not(#photo-status) { color: #afb8bd; font-size: 14px; line-height: 1.85; max-width: 410px; }
+.box { width: 100%; height: 460px; }
+.heart-message { width: min(90%, 420px); z-index: 2; }
+#typed-text { font-size: clamp(21px, 2.4vw, 29px); }
+.heart-caption { text-align: center; color: #aab3b5; font: italic 14px Georgia, serif; margin: -8px 0 0; }
+.photo-card { background: #f3ede2; padding: 14px 14px 0; transform: rotate(3deg); box-shadow: 0 22px 60px #0005; }
+.photo-frame { aspect-ratio: 4 / 5; background: #d9dfd7; overflow: hidden; }
+#birthday-photo { width: 100%; height: 100%; object-fit: cover; }
+#photo-placeholder { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; color: #55665d; background: radial-gradient(ellipse at top left, #edf0e6, transparent 65%), #d0d9d0; text-align: center; padding: 20px; }
+#photo-placeholder span { font: italic 22px Georgia, serif; }
+#photo-placeholder small { font-size: 11px; }
+.photo-caption { display: flex; align-items: center; justify-content: space-between; min-height: 62px; color: #575249; font: italic 15px Georgia, serif; gap: 12px; }
+.photo-caption span { font-size: 30px; }
+.memory-details { padding: 38px 12px 0; }
+.memory-details .eyebrow { margin-bottom: 12px; }
+h2 { font: normal 28px Georgia, serif; margin: 0; }
+button { border: 1px solid #d4b99666; border-radius: 30px; padding: 13px 20px; background: #d4b99612; color: #edd8bf; font: 12px Arial, sans-serif; cursor: pointer; margin-top: 8px; }
+button:hover { background: #d4b99626; }
+button:focus-visible, a:focus-visible { outline: 2px solid #e5c5a5; outline-offset: 5px; }
+#photo-status { font-size: 11px; line-height: 1.7; color: #9aa8ae; }
+footer { border-top: 1px solid #ffffff14; padding: 24px 0; text-align: center; color: #9aa8ae; font-size: 11px; letter-spacing: .4px; }
+.floating-hearts { z-index: 0; }
+[hidden] { display: none !important; }
+@media (max-width: 760px) {
+  .birthday-page { padding: 0 24px; }
+  .birthday-layout { grid-template-columns: 1fr; gap: 40px; padding-top: 42px; }
+  .greeting { text-align: center; }
+  .intro { margin-left: auto; margin-right: auto; }
+  .memory { width: min(100%, 390px); margin: 0 auto; }
+  .box { height: 430px; }
+  header > span { font-size: 10px; letter-spacing: 0; }
+}
+@media (max-width: 380px) {
+  .birthday-page { padding: 0 16px; }
+  header > span { max-width: 110px; text-align: right; line-height: 1.5; }
+  .box { width: calc(100% + 32px); margin-left: -16px; }
+}
+
+/* Memory carousel */
+.memory { min-width: 0; }
+.carousel { outline-offset: 10px; border-radius: 6px; }
+.carousel .photo-card { transform: rotate(2deg); transition: transform .45s ease, box-shadow .45s ease; }
+.carousel:hover .photo-card, .carousel:focus-within .photo-card { transform: rotate(0); box-shadow: 0 26px 65px #0006; }
+.photo-frame { position: relative; }
+#photo-slides { position: absolute; inset: 0; }
+#photo-placeholder { position: relative; }
+.carousel-slide { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; isolation: isolate; background: #17221f; opacity: 0; transition: opacity .9s ease; pointer-events: none; }
+.carousel-slide.is-active { opacity: 1; transform: scale(1) translateX(0); }
+.photo-backdrop { position: absolute; inset: -8%; width: 116%; height: 116%; object-fit: cover; filter: blur(24px) saturate(.85) brightness(.65); animation: photoDrift 16s ease-in-out infinite alternate; animation-play-state: paused; }
+.carousel-slide.is-active .photo-backdrop { animation-play-state: running; }
+.carousel-slide::after { content: ''; position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse at 12% 20%, #ffe0ad30, transparent 50%), radial-gradient(ellipse at 90% 85%, #b9dfe82b, transparent 48%), linear-gradient(90deg, #0b152245, transparent 35%, transparent 65%, #0b152245); pointer-events: none; }
+.photo-foreground { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 18px #0005); }
+.carousel.effects-paused .photo-backdrop { animation-play-state: paused; }
+@keyframes photoDrift {
+  from { transform: scale(1) translate(-1%, 0); }
+  to { transform: scale(1.06) translate(1%, -1%); }
+}
+.carousel-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 26px; }
+.carousel-controls button { margin: 0; min-width: 44px; min-height: 44px; padding: 10px 14px; }
+.carousel-controls button:disabled { opacity: .35; cursor: default; }
+#photo-count { font-size: 11px; color: #d4b996; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+#toggle-play { min-width: 65px; }
+.photo-dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; margin-top: 10px; }
+.photo-dot { display: grid; place-items: center; width: 28px; height: 30px; padding: 0; margin: 0; border: 0; background: transparent; }
+.photo-dot::before { content: ''; width: 6px; height: 6px; border-radius: 8px; background: #718080; transition: width .3s, background .3s; }
+.photo-dot[aria-current="true"]::before { width: 20px; background: #e5c5a5; }
+.photo-dot:hover { background: transparent; }
+.carousel:focus-visible { outline: 2px solid #e5c5a5; }
+.photo-thumbnails { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.photo-thumbnail { position: relative; padding: 3px; margin: 0; min-width: 0; border: 2px solid transparent; border-radius: 8px; background: #ffffff09; overflow: hidden; transition: border-color .25s, transform .25s; }
+.photo-thumbnail img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 3px; }
+.photo-thumbnail span { position: absolute; bottom: 5px; right: 5px; padding: 3px 5px; color: #fff; background: #0b1522cc; border-radius: 3px; font-size: 10px; }
+.photo-thumbnail[aria-current="true"] { border-color: #e5c5a5; transform: translateY(-3px); }
+.photo-thumbnail:hover { border-color: #e5c5a580; }
+@media (prefers-reduced-motion: reduce) {
+  .carousel .photo-card, .carousel-slide, .photo-dot::before, .photo-thumbnail { transition: none; }
+  .carousel-slide { transform: none; }
+  .photo-backdrop { animation: none; }
+}
+
+/* One-screen layout: reserve space for controls and let the artwork fit the rest. */
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body { min-height: 0; }
+.birthday-page { max-width: 1440px; height: 100vh; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 0 clamp(16px, 3vw, 40px); }
+header { padding: 14px 0; }
+footer { padding: 10px 0; }
+.birthday-layout { min-height: 0; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); padding: 16px 0; align-items: stretch; }
+.greeting { min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { margin-bottom: 10px; }
+h1 { font-size: clamp(32px, 3.5vw, 50px); margin-bottom: 10px; }
+.intro { margin: 0; font-size: 13px; line-height: 1.6; }
+.heart-stage { position: relative; flex: 1; min-height: 0; width: 100%; }
+.heart-stage .box { position: absolute; left: 50%; top: 50%; width: 460px; height: 460px; margin: 0; transform: translate(-50%, -50%) scale(var(--heart-scale, 0)); }
+.heart-caption { margin: 4px 0 0; font-size: 12px; }
+.memory { display: flex; flex-direction: column; min-height: 0; width: 100%; max-width: 660px; justify-self: center; margin: 0; }
+.carousel { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
+.carousel .photo-card { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 6px 6px 0; border-radius: 10px; transform: none; background: linear-gradient(145deg, #faf4e9, #ddd3c2); box-shadow: 0 22px 60px #0005, 0 0 32px #e5c5a50d; }
+.carousel:hover .photo-card, .carousel:focus-within .photo-card { transform: none; }
+.photo-frame { flex: 1; min-height: 0; aspect-ratio: auto; border-radius: 5px; }
+.photo-caption { min-height: 30px; font-size: 12px; }
+.photo-caption span { font-size: 22px; }
+.carousel-controls { grid-column: 1 / -1; grid-row: 2; margin-top: 0; gap: 12px; }
+.photo-dots { display: none; }
+.photo-dot { height: 20px; }
+.photo-thumbnails { display: none; }
+.photo-thumbnail { height: 100%; min-height: 0; max-height: 110px; padding: 2px; align-self: center; }
+.photo-thumbnail[aria-current="true"] { transform: none; }
+.photo-thumbnail img { height: 100%; aspect-ratio: auto; }
+.memory-details { flex-shrink: 0; padding: 8px 0 0; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px 10px; }
+.memory-details .eyebrow, .memory-details > p:not(#photo-status) { display: none; }
+.memory-details h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.memory-details button { margin: 0; padding: 7px 12px; }
+#photo-status { width: 100%; text-align: center; margin: 0; font-size: 10px; line-height: 1.4; }
+#photo-status:empty { display: none; }
+#photo-placeholder { gap: 8px; padding: 8px; }
+#photo-placeholder svg { width: 32px; height: 32px; }
+#photo-placeholder span { font-size: 18px; }
+@media (max-width: 760px) and (orientation: portrait) {
+  header { padding: 10px 0; }
+  header a { font-size: 19px; }
+  .birthday-layout { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1.4fr) minmax(0, 2.6fr); gap: 10px; padding: 10px 0; }
+  .greeting { text-align: center; }
+  .greeting .eyebrow, .intro, .heart-caption { display: none; }
+  h1 { font-size: 27px; letter-spacing: -.5px; margin: 0; }
+  h1 br { display: none; }
+  .memory { max-width: 460px; }
+  .carousel { gap: 6px; }
+  .memory-details h2 { display: none; }
+  .memory-details { padding-top: 4px; }
+  .photo-thumbnail { max-height: 64px; }
+  footer { font-size: 9px; padding: 7px 0; }
+}
+@media (max-height: 650px) and (orientation: landscape) {
+  header { padding: 8px 0; }
+  footer { padding: 6px 0; }
+  .birthday-layout { padding: 10px 0; }
+  h1 { font-size: 32px; }
+  .intro, .memory-details h2, .greeting .eyebrow { display: none; }
+  .memory-details { padding-top: 4px; }
+}
+
+/* Welcome screen */
+.welcome-screen { position: relative; z-index: 2; height: 100vh; height: 100dvh; display: grid; place-items: center; padding: 24px; text-align: center; }
+.welcome-card { width: min(100%, 480px); padding: clamp(20px, 5vh, 48px) 24px; border: 1px solid #e5c5a52e; border-radius: 24px; background: radial-gradient(ellipse at top, #d4b99612, transparent 75%), #101c26ed; box-shadow: 0 24px 80px #0004; }
+.welcome-heart { display: block; color: #e5c5a5; font: 64px Georgia, serif; margin-bottom: 20px; }
+.welcome-card h1 { margin: 12px 0; }
+.welcome-card > p:not(.eyebrow) { color: #afb8bd; font-size: 14px; line-height: 1.6; }
+#enter-birthday { display: block; min-width: 120px; margin: 24px auto 16px; padding: 16px 32px; font: 24px monospace; background: #e5c5a5; color: #15212a; box-shadow: 0 0 30px #e5c5a51a; transition: transform .2s, box-shadow .2s; }
+#enter-birthday:hover { transform: translateY(-3px); box-shadow: 0 8px 32px #e5c5a530; }
+.welcome-card small { color: #9aa8ae; font-size: 11px; }
+@media (max-height: 500px) { .welcome-card { padding: 16px; } .welcome-heart { font-size: 36px; margin-bottom: 8px; } #enter-birthday { margin: 12px auto; } }
+@media (prefers-reduced-motion: reduce) { #enter-birthday { transition: none; } }
+
+/* Decorative particle heart stays behind the welcome card. */
+#welcome-heart-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.welcome-card { position: relative; z-index: 1; }
+
+/* Compact music controls share the existing footer row. */
+.birthday-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; }
+.music-player { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 12px; min-width: 0; }
+.music-title { color: #e5c5a5; text-align: left; font-size: 11px; line-height: 1.5; }
+.music-title small { display: block; color: #9aa8ae; font-size: 9px; letter-spacing: 1px; }
+#birthday-music { display: block; width: 250px; max-width: 100%; height: 34px; color-scheme: dark; }
+#music-status { flex-basis: 100%; max-width: 380px; font-size: 10px; color: #e5c5a5; }
+@media (max-width: 760px) {
+  .birthday-footer { justify-content: center; padding: 6px 0; }
+  .footer-message { display: none; }
+  .music-player { width: 100%; flex-wrap: wrap; gap: 4px 8px; }
+  #birthday-music { flex: 1; min-width: 180px; max-width: 280px; }
+  .music-title { font-size: 10px; }
+  .music-title small { font-size: 8px; }
+}
