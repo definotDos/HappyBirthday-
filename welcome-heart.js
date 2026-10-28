@@ -3,9 +3,9 @@
   const context = canvas.getContext('2d');
   if (!context) return;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
-  const particles = Array.from({ length: 420 }, () => ({
-    angle: Math.random() * Math.PI * 2,
-    offset: (Math.random() - .5) * .14,
+  const particles = Array.from({ length: 420 }, (_, index) => ({
+    angle: index / 420 * Math.PI * 2,
+    offset: (Math.random() - .5) * .055,
     size: .8 + Math.random() * 1.8,
     phase: Math.random() * Math.PI * 2
   }));
@@ -25,8 +25,8 @@
       const x = width / 2 + 16 * Math.sin(angle) ** 3 * spread;
       const y = height / 2 - (13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle) + 2) * spread;
       context.globalAlpha = .35 + (Math.sin(seconds * 1.2 + particle.phase) + 1) * .25;
-      context.fillStyle = particle.size > 2 ? '#f4cfa4' : '#ee8c9e';
-      context.shadowColor = '#e58b99';
+      context.fillStyle = particle.size > 2 ? '#bdeaff' : '#87ceeb';
+      context.shadowColor = '#87ceeb';
       context.shadowBlur = 8;
       context.beginPath();
       context.arc(x, y, particle.size, 0, Math.PI * 2);

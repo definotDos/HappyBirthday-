@@ -1,6 +1,5 @@
 ﻿(() => {
   const input = document.getElementById('photo-input');
-  const choose = document.getElementById('choose-photo');
   const slides = document.getElementById('photo-slides');
   const placeholder = document.getElementById('photo-placeholder');
   const status = document.getElementById('photo-status');
@@ -74,7 +73,6 @@
     touchStart = null;
   }, { passive: true });
   carousel.addEventListener('touchcancel', () => { touchStart = null; });
-  choose.addEventListener('click', () => input.click());
   function release(items) {
     items.forEach(photo => { if (photo.url.startsWith('blob:')) URL.revokeObjectURL(photo.url); });
   }
@@ -122,7 +120,6 @@
     controls.hidden = false;
     previous.disabled = next.disabled = photos.length < 2;
     play.hidden = dots.hidden = thumbnails.hidden = photos.length < 2;
-    choose.textContent = 'Try other photos \u2197';
     updatePlay();
     show(0);
   }
@@ -138,7 +135,7 @@
     if (version !== selection) return;
     const valid = loaded.filter(Boolean);
     if (!valid.length) {
-      status.textContent = 'Pictures could not be loaded. Keep Picture 1.jpg through Picture 5.jpg beside index.html, or choose photos below.';
+      status.textContent = 'Pictures could not be loaded. Keep Picture 1.jpg through Picture 5.jpg beside index.html.';
       return;
     }
     renderPhotos(valid);
